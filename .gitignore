@@ -1,0 +1,12 @@
+frontend-2
+*.env
+.env*
+vendor/
+uploads/*
+!uploads/.gitkeep
+secrets.json
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example

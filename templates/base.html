@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{.Title}}</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/style.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero-inner">
+        <p class="eyebrow">IT AI Practice · TME</p>
+        <h1>File transfer</h1>
+        <p class="subtitle">Upload a file, then download it back from the list below.</p>
+        {{if .User}}
+        <p class="user-line">
+          Signed in as <span class="mono">{{.User}}</span>
+          · <a class="user-link" href="/auth/logout">Sign out</a>
+        </p>
+        {{end}}
+      </div>
+      <div class="stripe" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </header>
+
+    <main class="container">
+      {{if .Message}}<div class="banner banner-ok" role="status">{{.Message}}</div>{{end}}
+      {{if .Error}}<div class="banner banner-err" role="alert">{{.Error}}</div>{{end}}
+
+      <section class="card">
+        <h2>Upload</h2>
+        <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data" class="upload-form">
+          <label for="file" class="file-label">
+            <span class="file-cta">Choose file</span>
+            <span id="file-name" class="file-name">No file selected</span>
+            <input type="file" id="file" name="file" required />
+          </label>
+          <button type="submit" class="btn-brand">Upload</button>
+        </form>
+        <p class="hint">Maximum size: 25 MB.</p>
+      </section>
+
+      <section class="card">
+        <h2>Files</h2>
+        {{if .Files}}
+        <table class="files">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Size</th>
+              <th>Uploaded</th>
+              <th class="th-action"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {{range .Files}}
+            <tr>
+              <td class="mono">{{.Name}}</td>
+              <td>{{.Size}}</td>
+              <td class="mono subtle">{{.ModTime}}</td>
+              <td>
+                <a class="btn-ink download-link" href="/download/{{.Name}}" data-name="{{.Name}}">Download</a>
+              </td>
+            </tr>
+            {{end}}
+          </tbody>
+        </table>
+        {{else}}
+        <p class="empty">No files yet. Upload one to get started.</p>
+        {{end}}
+      </section>
+    </main>
+
+    <script src="/static/js/app.js"></script>
+  </body>
+</html>
